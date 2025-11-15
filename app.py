@@ -1,10 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from graphviz import Digraph
 import os
 
 app = Flask(__name__)
-os.makedirs("static", exist_ok=True)
-
 
 @app.route("/")
 def inicio():
@@ -29,11 +27,10 @@ def formulario():
             )
 
         # ------------------------------------------------------------------
-        # Árbol de decisión "bonito" con Graphviz
+        # Árbol de decisión
         # ------------------------------------------------------------------
         tree = Digraph(comment="Árbol de decisiones", format="png")
 
-        # Configuración global del gráfico
         tree.attr(rankdir="TB")
         tree.graph_attr.update(
             bgcolor="transparent",
@@ -44,7 +41,6 @@ def formulario():
             ranksep="0.6",
         )
 
-        # Estilo base para nodos y aristas
         tree.node_attr.update(
             shape="box",
             style="rounded,filled",
@@ -61,7 +57,6 @@ def formulario():
             arrowsize="0.9",
         )
 
-        # Función para crear nodos con colores personalizados
         def nodo(node_id, label, fill="#E0F7FA"):
             tree.node(
                 node_id,
@@ -70,7 +65,6 @@ def formulario():
                 margin="0.25,0.18",
             )
 
-        # Nodo 1: Margen
         nodo("A", f"¿Margen ≥ {margen_lim:.1f}%?", "#B3E5FC")
 
         if margen < margen_lim:
@@ -79,7 +73,6 @@ def formulario():
             decision = "No invertir (margen insuficiente)"
 
         else:
-            # Nodo 2: Liquidez
             nodo("C", f"¿Liquidez ≥ {liq_lim:.1f}?", "#B3E5FC")
             tree.edge("A", "C", label="Sí")
 
@@ -89,7 +82,6 @@ def formulario():
                 decision = "No invertir (liquidez insuficiente)"
 
             else:
-                # Nodo 3: Deuda
                 nodo("E", f"¿Deuda ≤ {deuda_lim:.1f}?", "#B3E5FC")
                 tree.edge("C", "E", label="Sí")
 
@@ -102,9 +94,12 @@ def formulario():
                     tree.edge("E", "G", label="Sí")
                     decision = "Invertir (cumple criterios)"
 
-        # Guardar imagen en /static/arbol.png
-        output_path = os.path.join("static", "arbol")
+        # ------------ AQUÍ EL CAMBIO IMPORTANTE --------------
+        # Guardar imagen en /tmp (Render permite escribir ahí)
+        output_path = "/tmp/arbol"
         tree.render(output_path, cleanup=True)
+        # Archivo final: /tmp/arbol.png
+        # ------------------------------------------------------
 
         return redirect(url_for("resultado", decision=decision))
 
@@ -114,14 +109,21 @@ def formulario():
 @app.route("/resultado")
 def resultado():
     decision = request.args.get("decision")
-    image_path = "static/arbol.png"
     explicacion = generar_explicacion(decision)
+
+    # enviar ruta interna
     return render_template(
         "resultado.html",
         decision=decision,
-        image_path=image_path,
         explicacion=explicacion,
+        image_path="/resultado_imagen"
     )
+
+
+# Ruta que sirve la imagen generada en /tmp
+@app.route("/resultado_imagen")
+def resultado_imagen():
+    return send_file("/tmp/arbol.png", mimetype="image/png")
 
 
 def generar_explicacion(decision):
@@ -141,4 +143,4 @@ def generar_explicacion(decision):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000)

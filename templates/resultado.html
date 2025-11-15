@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado</title>
+
+  <!-- Fuente Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 0% 0%, #3de0b2 0, #00897b 40%, #004d40 100%);
+      color: #ffffff;
+      padding: 24px 12px;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      padding: 30px 32px 26px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.97), rgba(255,255,255,0.92));
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      color: #102a33;
+      text-align: left;
+    }
+
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 200, 150, 0.26), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .card::before {
+      top: -150px;
+      right: -110px;
+    }
+    .card::after {
+      bottom: -170px;
+      left: -120px;
+      opacity: 0.4;
+    }
+
+    .badge {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(0, 150, 136, 0.08);
+      font-size: 0.75rem;
+      color: #00695c;
+      margin-bottom: 6px;
+    }
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00c853;
+      box-shadow: 0 0 8px rgba(0, 200, 83, 0.8);
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 4px 0 10px;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #0d2c33;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 18px;
+      font-size: 0.92rem;
+      color: #46636a;
+    }
+
+    .resultado {
+      position: relative;
+      z-index: 1;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, #e0fff4, #f5fffb);
+      color: #00695c;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    .resultado-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0,191,165,0.15);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #00897b;
+    }
+
+    .explicacion {
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #455a64;
+      line-height: 1.55;
+      max-width: 100%;
+    }
+
+    .image-wrapper {
+      position: relative;
+      z-index: 1;
+      margin-top: 22px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      display: block;
+    }
+
+    .helper-text {
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      font-size: 0.78rem;
+      color: #60757a;
+    }
+
+    .actions {
+      position: relative;
+      z-index: 1;
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .volver {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #7CFFCB, #2ECC71);
+      color: #004d40;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.32);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    }
+
+    .volver span.icon {
+      font-size: 1.1rem;
+      transform: translateY(1px);
+    }
+
+    .volver:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.42);
+      filter: brightness(1.05);
+    }
+
+    .volver:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      filter: brightness(0.98);
+    }
+
+    @media (max-width: 700px) {
+      .card {
+        padding: 24px 18px 20px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Resultado del simulador financiero
+    </div>
+
+    <h1>Resultado de la evaluación</h1>
+    <p class="subtitle">
+      Este resumen muestra si la empresa se acerca o no a los parámetros que estableciste para tu decisión de inversión.
+    </p>
+
+    <div class="resultado">
+      <span class="resultado-pill">Conclusión</span>
+      <span>{{ decision }}</span>
+    </div>
+
+    <div class="explicacion">
+      {{ explicacion }}
+    </div>
+
+    <div class="image-wrapper">
+      <img src="{{ image_path }}" alt="Árbol de decisiones">
+    </div>
+
+    <p class="helper-text">
+      Recuerda: este simulador es sólo una herramienta de apoyo y no sustituye un análisis financiero profesional.
+    </p>
+
+    <div class="actions">
+      <a href="/" class="volver">
+        <span class="icon">⬅</span>
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+</body>
+</html>
+

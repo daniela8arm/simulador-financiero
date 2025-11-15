@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Evaluación Financiera</title>
+
+  <!-- Fuente Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 0% 0%, #3de0b2 0, #00897b 40%, #004d40 100%);
+      color: #ffffff;
+      padding: 24px 12px;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      padding: 32px 32px 26px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9));
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      color: #123033;
+    }
+
+    /* Ondas decorativas como la pantalla de inicio */
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 200, 150, 0.26), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .card::before {
+      top: -150px;
+      right: -110px;
+    }
+    .card::after {
+      bottom: -170px;
+      left: -120px;
+      opacity: 0.4;
+    }
+
+    .badge {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(0, 150, 136, 0.08);
+      font-size: 0.75rem;
+      color: #00695c;
+      margin-bottom: 6px;
+    }
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00c853;
+      box-shadow: 0 0 8px rgba(0, 200, 83, 0.8);
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      text-align: left;
+      margin: 4px 0 4px;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #0d2c33;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 18px;
+      font-size: 0.92rem;
+      color: #46636a;
+    }
+
+    form {
+      position: relative;
+      z-index: 1;
+      margin-top: 6px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+      color: #23434a;
+      font-size: 0.9rem;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #7c8f93;
+      margin-top: 2px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 11px;
+      margin-top: 6px;
+      border-radius: 11px;
+      border: 1px solid #d0dde4;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      background: #f9fcff;
+    }
+
+    input:focus {
+      border-color: #00bfa5;
+      box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.18);
+      background: #ffffff;
+    }
+
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(90deg, #7CFFCB, #2ECC71);
+      color: #004d40;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    }
+
+    button span.icon {
+      font-size: 1.15rem;
+      transform: translateY(1px);
+    }
+
+    button:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      filter: brightness(1.05);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      filter: brightness(0.98);
+    }
+
+    .helper-text {
+      position: relative;
+      z-index: 1;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: #60757a;
+      text-align: left;
+    }
+
+    .error {
+      position: relative;
+      z-index: 1;
+      color: #d32f2f;
+      text-align: left;
+      margin-top: 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 26px 20px 22px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Parámetros para evaluar la empresa
+    </div>
+
+    <h1>Evaluación Financiera</h1>
+    <p class="subtitle">
+      Ingresa los indicadores de la empresa y los valores de referencia que deseas utilizar para tu análisis.
+    </p>
+
+    <form method="POST">
+      <label>Margen empresa (%)</label>
+      <span class="hint">Utiliza el margen neto o el que estés analizando.</span>
+      <input type="number" step="0.1" name="margen" required>
+
+      <label>Razón corriente empresa</label>
+      <span class="hint">Activo circulante / Pasivo circulante.</span>
+      <input type="number" step="0.1" name="liquidez" required>
+
+      <label>Deuda/EBITDA empresa</label>
+      <span class="hint">Indica el apalancamiento financiero de la empresa.</span>
+      <input type="number" step="0.1" name="deuda" required>
+
+      <label>Margen mínimo (%)</label>
+      <input type="number" step="0.1" name="margenLim" value="10" required>
+
+      <label>Liquidez mínima</label>
+      <input type="number" step="0.1" name="liqLim" value="1.5" required>
+
+      <label>Deuda/EBITDA máxima</label>
+      <input type="number" step="0.1" name="deudaLim" value="2.5" required>
+
+      <button type="submit">
+        Evaluar empresa
+        <span class="icon">➜</span>
+      </button>
+    </form>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <p class="helper-text">
+      Recuerda: este simulador es sólo una herramienta de apoyo y no sustituye un análisis financiero profesional.
+    </p>
+  </div>
+</body>
+</html>

@@ -1,3 +1,4 @@
 flask
 graphviz
 gunicorn
+markupsafe==2.1.3
